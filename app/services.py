@@ -84,16 +84,16 @@ class ProductService:
 
     @staticmethod
     def filter_products(category=None, price_min=None, price_max=None, vendor_location=None, vendor_radius_km=None):
-        products = Product.objects.select_related('vendor').all()
+        products = list(Product.objects.select_related('vendor').all())
         if category:
-            products = products.filter(category=category)
+            products = [p for p in products if p.category == category]
         if price_min is not None:
-            products = products.filter(price__gte=Decimal(price_min))
+            products = [p for p in products if p.price >= Decimal(price_min)]
         if price_max is not None:
-            products = products.filter(price__lte=Decimal(price_max))
+            products = [p for p in products if p.price <= Decimal(price_max)]
         if vendor_location and vendor_radius_km:
             vendors = VendorService.get_vendors_in_location(vendor_location, vendor_radius_km)
-            products = products.filter(vendor__in=vendors)
+            products = [p for p in products if p.vendor in vendors]
         return products
 
 
