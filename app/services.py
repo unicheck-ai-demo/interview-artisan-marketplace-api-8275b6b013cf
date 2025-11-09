@@ -108,7 +108,6 @@ class CartService:
     @staticmethod
     def get_cart(user_id):
         cart = cache.get(CartService._cart_key(user_id))
-        # Ensure all quantities are integers
         if cart:
             cart_int = {str(pid): int(qty) for pid, qty in cart.items()}
             return cart_int
@@ -116,7 +115,6 @@ class CartService:
 
     @staticmethod
     def set_cart(user_id, cart_data):
-        # Ensure all quantities are integers when storing
         clean_cart = {str(pid): int(qty) for pid, qty in cart_data.items()}
         cache.set(CartService._cart_key(user_id), clean_cart, timeout=CartService.CART_TTL)
 
@@ -183,3 +181,17 @@ class VendorAnalyticsService:
         qs = Order.objects.filter(vendor_id=vendor_id, status='completed')
         total_sales = qs.aggregate(total_amount=Sum('total_amount'), total_orders=Count('id'))
         return total_sales
+
+
+class WishlistService:
+    @staticmethod
+    def get_items(user_id):
+        return []
+
+    @staticmethod
+    def add_item(user_id, product_id):
+        pass
+
+    @staticmethod
+    def remove_item(user_id, product_id):
+        pass

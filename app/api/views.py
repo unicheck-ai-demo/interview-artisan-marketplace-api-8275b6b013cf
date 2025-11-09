@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 
 from app.api.serializers import ProductSerializer, VendorSerializer
 from app.models import Product, Vendor
-from app.services import CartService, CheckoutService, ProductService, VendorAnalyticsService
+from app.services import CartService, CheckoutService, ProductService, VendorAnalyticsService, WishlistService
 
 
 class HealthCheckView(APIView):
@@ -100,3 +100,21 @@ class CheckoutView(views.APIView):
             return Response({'success': True, 'orders': [o.id for o in orders]})
         except Exception as e:
             return Response({'success': False, 'error': str(e)}, status=400)
+
+
+class WishlistView(views.APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        items = WishlistService.get_items(request.user.id)
+        return Response(items)
+
+    def post(self, request):
+        product_id = request.data.get('product_id')
+        WishlistService.add_item(request.user.id, product_id)
+        return self.get(request)
+
+    def delete(self, request):
+        product_id = request.data.get('product_id')
+        WishlistService.remove_item(request.user.id, product_id)
+        return self.get(request)
