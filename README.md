@@ -42,16 +42,67 @@ Good luck and enjoy!
 
 ## About Project
 
+A backend service for an online artisan marketplace connecting local producers and customers. The platform enables vendors to manage their profiles and product listings, while customers can browse, filter, and purchase unique handmade goods. Carts are managed with Redis for performance, and checkout workflows ensure consistency through transactional stock updates. This service is aimed at supporting real business operations such as multi-vendor order handling, inventory control, and secure customer-vendor communication.
+
+[see more details](docs/)
+
 ### Tech Stack
 
 - Python: 3.11
 - Django: 4
-- Celery: 5
 - API: Django REST Framework
 - Database: PostgreSQL 15
 - Caching: Redis 7
 - Testing: Pytest, Pytest-Django
+- Architecture: Service Pattern, Resource-Based API
 - Dependency Management: `requirements.txt`
+
+
+### Project Structure Overview
+```bash
+> tree -a --gitignore /app 
+.
+├── .env.example
+├── Dockerfile
+├── Makefile
+├── README.md
+├── app
+│   ├── api
+│   │   ├── serializers.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── apps.py
+│   ├── migrations
+│   │   └── 0001_initial.py
+│   ├── models.py
+│   ├── services.py
+│   └── tasks.py
+├── config
+│   ├── asgi.py
+│   ├── celery.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── docker-compose.yml
+├── docs
+│   └── README.md
+├── manage.py
+├── pyproject.toml
+├── requirements.txt
+└── tests
+    ├── api
+    │   ├── test_analytics_api.py
+    │   ├── test_auth_api.py
+    │   ├── test_cart_checkout_api.py
+    │   ├── test_heapth.py
+    │   └── test_vendor_product_api.py
+    ├── conftest.py
+    ├── test_services.py
+    └── test_vendor_product_models.py
+
+8 directories, 30 files
+
+```
 
 ---
 Contact: [info@unicheck.ai](mailto:info@unicheck.ai)
