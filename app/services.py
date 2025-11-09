@@ -161,14 +161,14 @@ class CheckoutService:
             vendor_id = product.vendor.id
             if vendor_id not in order_map:
                 order_map[vendor_id] = Order.objects.create(
-                    customer=user, vendor=product.vendor, status='paid', total_amount=0
+                    customer=user, vendor=product.vendor, status='completed', total_amount=0
                 )
             OrderItem.objects.create(
                 order=order_map[vendor_id], product=product, quantity=qty, unit_price=product.price
             )
             order_map[vendor_id].total_amount += product.price * qty
         for order in order_map.values():
-            order.status = 'paid'
+            order.status = 'completed'
             order.completed_at = timezone.now()
             order.save()
         CartService.clear_cart(user.id)
